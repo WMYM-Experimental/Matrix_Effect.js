@@ -1,18 +1,17 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-canvas.width = window.width;
-canvas.height = window.height;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 class Char {
-  constructor(x, y, size, canvasHeight) {
+  constructor(x, y, canvasHeight) {
     this.x = x;
     this.y = y;
-    this.size = size;
     this.canvasHeight = canvasHeight;
     this.symbols =
       "WashingtonYandunWMYM华盛顿wmym烟墩1234567890ヤンドゥン@#$€!?ワシントンWY";
@@ -22,38 +21,40 @@ class Char {
   draw() {
     this.current = this.symbols[getRandomInt(0, this.symbols.length)];
     ctx.fillStyle = "#00ff41";
-    ctx.fillText(this.current, this.x * this.size, this.y * this.size);
-
-    if (this.y * this.size > this.canvasHeight) {
+    context.fillStyle = "#0aff0a";
+    context.fillText(this.text, this.x * this.fontSize, this.y * this.fontSize);
+    if (this.y * this.fontSize > this.canvasHeight && Math.random() > 0.95) {
       this.y = 0;
     } else {
-      this.y = this.y + 1;
+      this.y += 1;
     }
   }
 }
 
 class Matrix {
-  constructor(canvasWidth, canvasHeight, size) {
+  constructor(canvasWidth, canvasHeight) {
     this.canvasWidth = canvasWidth;
     this.canvasHeight = canvasHeight;
-    this.size = size;
-    this.cols = parseInt(this.canvasWidth / this.size);
-    this.chars = [];
+    this.fontSize = 25;
+    this.cols = parseInt(this.canvasWidth / this.fontSize);
+    this.symbols = [];
     this.#init();
-    console.log(this.chars);
   }
   #init() {
     for (let i = 0; i < this.cols; i++) {
-      this.chars.push(new Char(i, 0, this.size, this.canvasHeight));
+      this.chars[i] = new Char(i, 0, this.fontSize, this.canvasHeight);
     }
   }
 }
 
-const m = new Matrix(canvas.width, canvas.height, 25);
+const matrix = new Matrix(canvas.width, canvas.height);
 
 function animate() {
-  ctx.font = 25 + "px monospace";
-  ctx.fillStyle = "#00ff41";
+  ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.font = thisfontSize + "px monospace";
+  ctx.fillStyle = "#0aff0a";
+
   m.chars.forEach((c) => {
     c.draw();
   });
