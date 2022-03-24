@@ -59,4 +59,10 @@ const animate = () => {
   });
   requestAnimationFrame(animate);
 };
+
+window.addEventListener("resize", () => {
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+});
+
 animate();
